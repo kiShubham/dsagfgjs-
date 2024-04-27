@@ -49,6 +49,8 @@ const factorialRecursive = (n) => {
 
 // console.log(factorialRecursive(4));
 
+// * number of zeros at the end of factorial
+
 // this fn not works if num = 100 ; too large to calculate factorial
 // some issue with this code : timecomplexity is linear ;
 const trailingZeroNaive = (num) => {
@@ -73,6 +75,7 @@ const trailingZeroNaive = (num) => {
 
 const trailingZeroEfficient = (num) => {
   //   let x = Math.floor(num / 5) + Math.floor(num / 25) + Math.floor(num / 125);
+  //10000000
 
   let res = 0;
   for (let i = 5; i <= num; i = i * 5) {
@@ -81,7 +84,7 @@ const trailingZeroEfficient = (num) => {
   return res;
 };
 
-// console.log(trailingZeroEfficient(251)); // 62
+console.log(trailingZeroEfficient(251)); // 62
 
 /* 
 ! Greatest common divisor ;
@@ -137,3 +140,80 @@ const myLcmNaive = (x, y) => {
 const myLcm = (x, y) => {
   return (x * y) / gcdEuclidean(a, b);
 };
+
+//! Prime Number ;
+
+function ifprime(num) {
+  if (num == 1 || num == 0) return false;
+  if (num == 2 || num == 3) return true;
+  if (num % 2 == 0 || num % 3 == 0) return false; // not prime
+  // 25<=7 not even checking , so fastest yet O(1)
+  for (let i = 5; i * i <= num; i = i + 6) {
+    // console.log(num, i);
+    if (num % i === 0 || num % (i + 2) === 0) return false;
+  }
+  return true;
+}
+
+console.log(ifprime(7));
+
+/*
+! All Divisor of a number ; 
+*/
+// TC : theta( sq.rt (n) )
+function divisor(num) {
+  let arr = [];
+  for (let i = 1; i * i <= num; i++) {
+    if (num % i === 0) {
+      arr.push(i);
+      if (i !== num / i) arr.push(num / i);
+      console.log(i, num / i);
+    }
+  }
+  return arr;
+}
+// console.log(divisor(25));
+
+// TC : theta( sq.rt (n) )
+function divisorInSortedOrder(num) {
+  let i = 0;
+  for (i = 1; i * i < num; i++) {
+    if (num % i === 0) console.log(i);
+  }
+  for (i; i >= 1; i--) {
+    if (num % i === 0) console.log(num / i);
+  }
+  return "done";
+}
+// console.log(divisorInSortedOrder(20));
+
+/* 
+! Sieve of Erasthonese : to find the prime numbers till n ; 
+*/
+function sieve(num) {
+  let primeArr = new Array(num + 1).fill(true);
+  for (let i = 2; i <= num; i++) {
+    if (ifprime(i)) {
+      console.log(i);
+      for (let j = i * i; j <= num; j = j + i) {
+        // ifprime(j)=false
+      }
+    }
+  }
+}
+
+/* 
+!  computing power x^n where n>=0 ;
+i/p : x= 2 ,n =3 , answer = 8 ;
+
+*/
+
+const computePower = (x, n) => {
+  let ans = 1;
+  for (let i = 0; i < n; i++) {
+    ans = ans * x;
+  }
+  return ans;
+};
+console.log(computePower(2, 3));
+console.log(computePower(2, 35));
