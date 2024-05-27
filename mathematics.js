@@ -28,7 +28,7 @@ const palindromeNum = (num) => {
 // Tc: θ(n) ,aux space :θ(1)
 const factorialIterative = (num) => {
   if (num == 0 || num == 1) {
-    return 0;
+    return num;
   }
   let res = 1;
   for (let i = 2; i <= num; i++) {
@@ -71,6 +71,7 @@ const trailingZeroNaive = (num) => {
 // the hint is 2*5=10 ; we have to find how many 2 ,5 pair is consisted by number like
 //10 = > 10,9,8,7,6,5,4,3,2,1 ; so we can see 10,2,5 : 2 pairs of 2,5 so their could be 2 zeros at the end of 10! ;
 //their is a thing that numbe of 5 is always less than number of two's , so their for just count 5 ;
+
 //TC: θ(logn) ,Aux Space : O(1)
 
 const trailingZeroEfficient = (num) => {
@@ -215,5 +216,5 @@ const computePower = (x, n) => {
   }
   return ans;
 };
-console.log(computePower(2, 3));
-console.log(computePower(2, 35));
+// console.log(computePower(2, 3));
+// console.log(computePower(2, 35));

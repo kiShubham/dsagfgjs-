@@ -166,16 +166,208 @@ function bfsOneWay(root) {
   }
   return;
 }
-bfsOneWay(root);
+// bfsOneWay(root);
 
-function bfsPrint(root) {
-  if (root == null) return;
-  else {
-    console.log(root.key);
-
-    bfsPrint(root.left);
-    bfsPrint(root.right);
+//making Queue , for implementing bfs ;
+class Queue {
+  constructor() {
+    this.map = {};
+    this.front = -1;
+    this.rear = -1;
+  }
+  enque(x) {
+    this.rear++;
+    this.map[this.rear] = x;
+    if (this.front === -1) {
+      this.front++;
+    }
+    return;
+  }
+  deque() {
+    if (this.front == -1) return null;
+    let res = this.map[this.front];
+    this.front++;
+    if (this.front > this.rear) {
+      this.front = this.rear = -1;
+    }
+    return res;
+  }
+  isEmpty() {
+    return this.front === -1;
+  }
+  size() {
+    return this.rear - this.front + 1;
   }
 }
 
-// bfsPrint(root);
+function printLevel(root) {
+  if (root == null) return;
+  let q = new Queue();
+  q.enque(root);
+  while (!q.isEmpty()) {
+    //O(height of tree)
+    let curr = q.deque(); //O(1)
+    console.log(curr.key);
+    if (curr.left !== null) q.enque(curr.left); //O(1) remember both have if condition and not if else ;
+    if (curr.right !== null) q.enque(curr.right); //O(1)
+  }
+}
+// printLevel(root);
+
+/*
+!Bfs : Breadth First Search 
+? level order traversal line by line ; // 
+*/
+
+/* 
+* way 1
+O(n+h); n for every node, h because ,we are inserting "null" at each level ;
+auxilary space : Θ(width of tree)
+*/
+function printLevelLineByLine(root) {
+  let ans = "";
+  if (root == null) return;
+  let q = new Queue();
+  q.enque(root);
+  q.enque(null);
+
+  while (q.size() > 1) {
+    let curr = q.deque();
+    if (curr == null) {
+      ans += "\n";
+      q.enque(null);
+      // continue;
+    } else {
+      ans += curr.key + "  ";
+      if (curr.left !== null) q.enque(curr.left); //O(1) remember both have if condition and not if else ;
+      if (curr.right !== null) q.enque(curr.right); //O(1)
+    }
+  }
+  return ans;
+}
+//  both result same
+
+function printLevelLineByLineS(root) {
+  let ans = "";
+  if (root == null) return;
+  let q = new Queue();
+  q.enque(root);
+  q.enque(null);
+
+  while (q.size() > 1) {
+    let curr = q.deque();
+    if (curr == null) {
+      ans += "\n";
+      q.enque(null);
+      continue;
+    }
+    ans += curr.key + "  ";
+    if (curr.left !== null) q.enque(curr.left); //O(1) remember both have if condition and not if else ;
+    if (curr.right !== null) q.enque(curr.right); //O(1)
+  }
+  return ans;
+}
+// by using continue keyword , that particular loop where curr==null,
+// will be ended and next loop will be started ;
+
+// console.log(printLevelLineByLineS(root));
+
+/* 
+
+* way 2 ;
+count nodes on every level ;
+we mainly run inner loop count times ;
+we are inserting every node exactly once inside the queue 
+and we are taking out every node exactly once outside the queue;
+All operations is O(1) in queue;
+the loop is taking exactly n loop so 
+timecomplexity : Θ(n)
+auxilary space : Θ(width of Tree)
+*/
+
+function printLevelWayII(root) {
+  let ans = "";
+  if (root == null) return ans;
+  let q = new Queue();
+  q.enque(root);
+  while (!q.isEmpty()) {
+    let count = q.size();
+    for (let i = 0; i < count; i++) {
+      //i<q.size() will not work , because simaultaneosly changing
+      let curr = q.deque();
+      ans += curr.key + " ";
+      if (curr.left != null) q.enque(curr.left);
+      if (curr.right != null) q.enque(curr.right);
+    }
+    ans += "\n";
+  }
+  return ans;
+}
+// console.log(printLevelWayII(root));
+
+/* 
+
+? find the maximum in the tree ?
+2 ways : recursive and iterative ;
+
+*/
+// time : Θ(n) , space : Θ(h) ; height of the tree
+
+function getMax(root) {
+  if (root === null) {
+    return Number.NEGATIVE_INFINITY;
+  }
+  return Math.max(root.key, getMax(root.left), getMax(root.right));
+}
+// console.log(getMax(root));//90
+
+function getMaxIterative(root) {
+  let max = Number.NEGATIVE_INFINITY;
+  if (root == null) return max;
+  max = root.key;
+  let q = new Queue();
+  q.enque(root);
+  while (!q.isEmpty()) {
+    let count = q.size();
+    for (let i = 0; i < count; i++) {
+      let curr = q.deque();
+      max = Math.max(max, curr.key);
+      if (curr.left !== null) q.enque(curr.left);
+      if (curr.right !== null) q.enque(curr.right);
+    }
+  }
+  return max;
+}
+// console.log(getMaxIterative(root));//90
+
+/* 
+! size of the Binary tree ;size: Number of Node in tree (of course including root)
+2 ways : recursive and iterative ;
+
+*/
+
+//time : Θ(n) and space : Θ(h)
+function sizeOfTreeRecursive(root) {
+  if (root == null) return 0;
+  return 1 + sizeOfTreeRecursive(root.left) + sizeOfTreeRecursive(root.right);
+}
+
+function sizeOfTreeIterative(root) {
+  let size = 0;
+  if (root == null) return size;
+  let q = new Queue();
+  q.enque(root);
+  size++;
+  while (!q.isEmpty()) {
+    let count = q.size();
+    for (let i = 0; i < count; i++) {
+      let curr = q.deque();
+      // max = Math.max(max, curr.key);
+      size++;
+      if (curr.left !== null) q.enque(curr.left);
+      if (curr.right !== null) q.enque(curr.right);
+    }
+  }
+  return size - 1;
+}
+// console.log(sizeOfTreeIterative(root));

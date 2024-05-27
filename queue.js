@@ -36,6 +36,7 @@ class QueueArraysimpler {
   }
 }
 //! more accurate: circular array, all operation : O(1)
+//not maintaining rear variable, got it from size and front ;
 class Queue {
   constructor(cap) {
     this.cap = cap;
@@ -116,7 +117,7 @@ class QueueLinkedList {
 }
 
 /* 
-?implementation using hashing / map / object
+? implementation using hashing / map / object
 time complexity for all opearation : O(1)
 */
 
