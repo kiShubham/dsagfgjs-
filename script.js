@@ -173,3 +173,10 @@ createOrder(cart)
   .then(function () {
     console.log("no matter what happens i will be called");
   });
+
+// * Debouncing ;
+let counter = 0;
+
+const getData = () => {
+  console.log("fn called times :" + counter++);
+};

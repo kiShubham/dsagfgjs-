@@ -475,10 +475,10 @@ const sumIII = (arr) => {
     res[i].sort((a, b) => a - b);
   }
 
-  return resSet;
+  return res;
 };
 
-console.log(sumIII([-1, 0, 1, 2, -1, -4]));
+// console.log(sumIII([-1, 0, 1, 2, -1, -4]));
 // console.log(sumIII([0, 0, 0]));
 
 // todo: 4 sum and 4sum II ;
@@ -676,3 +676,29 @@ const ngr = (arr) => {
   return ans.reverse();
 };
 // console.log(ngr([1, 2, 3, 4, 5]));
+
+function matrixMultiplication(n1, m1, n2, m2, grid1, grid2) {
+  let res = Array.from({ length: 2 }, () => new Array(5).fill(null));
+  for (let i = 0; i <= n1; i++) {
+    for (let j = 0; j < m2; j++) {
+      for (let k = 0; k < m1; k++) {
+        res[i][j] += grid1[i][k] * grid2[k][j];
+      }
+    }
+    return res;
+  }
+
+  return res;
+}
+
+const grid1 = [
+  [1, 4],
+  [5, 9],
+];
+
+const grid2 = [
+  [1, 2, 8, 8, 4],
+  [3, 3, 6, 5, 2],
+];
+
+console.log(matrixMultiplication(2, 2, 2, 5, grid1, grid2));

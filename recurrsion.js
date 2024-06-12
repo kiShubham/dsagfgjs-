@@ -55,10 +55,12 @@ function sumN(n) {
   }
   return res;
 }
-console.log(sumN(5656));
+// console.log(sumN(5656));
 
 function sumNRec(n) {
   if (n === 0) return 0;
   return (n % 10) + sumNRec(Math.floor(n / 10));
 }
-console.log(sumNRec(9987));
+// console.log(sumNRec(9987));
+
+// striver lec 6 and lec 7 ;
