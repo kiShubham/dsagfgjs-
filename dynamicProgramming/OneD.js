@@ -145,23 +145,3 @@ function frogMemo_I(n, arr, dp) {
 }
 let dp = new Array(7).fill(null);
 console.log(frogMemo_I(5, [30, 10, 60, 10, 60, 50], dp));
-
-function minEnergyForFrog(n, arr) {
-  // Base case: No energy needed to reach the 0th stone
-  if (n === 0) return 0;
-
-  // Initialize minimum energy for single and double jumps (assuming positive values)
-  let singleJump = Infinity;
-  let doubleJump = Infinity;
-  if (n >= 1) {
-    // Handle case where n is 1 (single jump only)
-    singleJump = Math.abs(arr[n] - arr[n - 1]);
-  }
-  if (n >= 2) {
-    doubleJump = Math.abs(arr[n] - arr[n - 2]) + minEnergyForFrog(n - 2, arr);
-  }
-  // Return the minimum energy required (single or double jump)
-  return Math.min(singleJump, doubleJump);
-}
-
-// console.log(minEnergyForFrog(6, [30, 10, 60, 10, 60, 50]));

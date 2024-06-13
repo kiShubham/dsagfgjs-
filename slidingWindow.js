@@ -5,6 +5,7 @@
 ? Number of subArray where some < condition > ,  ;560. Subarray Sum Equals K
 ? finding the maximum/shortest window with some <Condition >
 */
+//*todo: 560. Subarray Sum Equals K leetcode
 
 /* 
 ?pattern _ 1  
@@ -36,6 +37,7 @@ const maximumSumofWindow = (arr, k) => {
 
 /* 
 ?pattern 2
+
 
 ! Q.2 longest subarray with sum <=k ;
 */
@@ -196,4 +198,161 @@ const longestSubstring_hashMap = (str) => {
   return maxlen;
 };
 
-console.log(longestSubstring_hashMap(s));
+// console.log(longestSubstring_hashMap(s));
+
+/*
+ * 1004. Max Consecutive Ones III
+- Given a binary array nums and an integer k, 
+return the maximum number of consecutive 1's in the array
+ if you can flip at most k 0's. 
+
+  Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
+  Output: 6
+ */
+
+let ones = [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0];
+ones = [0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1];
+
+const maxConsecutive = (arr, k) => {
+  let l = 0,
+    r = 0;
+  let zerosCount = 0;
+  let maxlen = 0;
+  let zeros = new Map();
+
+  let n = arr.length;
+  while (r < n) {
+    if (arr[r] === 0) {
+      let numberofZeros = zeros.size;
+      //zeros.set(no.ofzeroth:indexofr)
+      zeros.set(numberofZeros === 0 ? 1 : numberofZeros + 1, r);
+      zerosCount++;
+    }
+    if (zerosCount > k) {
+      let tempKey = zeros.size - k;
+      l = zeros.get(tempKey) + 1;
+    }
+
+    // console.log(r, l);
+    maxlen = Math.max(maxlen, r - l + 1);
+    r++;
+  }
+  return maxlen;
+};
+// console.log(maxConsecutive(ones, (k = 3)));
+
+const maxConsecutiveOtherway = (arr, k) => {
+  let l = 0,
+    r = 0;
+  let maxlen = 0,
+    len = 0;
+  let zeros = 0;
+  let n = arr.length;
+  while (r < n) {
+    if (arr[r] === 0) zeros++;
+    if (zeros > k) {
+      if (arr[l] === 0) zeros--;
+      l++;
+    }
+    if (zeros <= k) len = r - l + 1;
+    maxlen = Math.max(maxlen, len);
+    r++;
+  }
+  return maxlen;
+};
+
+// console.log(maxConsecutiveOtherway(ones, 3));
+
+/*
+ * Fruit into Baskets
+
+You are visiting a farm that has a single row of fruit trees arranged from left to right.
+ The trees are represented by an 
+? integer array fruits of size N,  where fruits[i]  is the type of fruit the ith tree produces.
+You want to collect as much fruit as possible.
+ However, the owner has some strict rules that you must follow :
+
+?You only have two baskets, and each basket can only hold a single type of fruit. 
+There is no limit on the amount of fruit each basket can hold.
+Starting from any tree of your choice, you must pick exactly one fruit from every tree 
+(including the start tree) while moving to the right.
+ The picked fruits must fit in one of the baskets.)
+Once you reach a tree with fruit that cannot fit in your baskets, you must stop.
+Given the integer array fruits, return the maximum number of fruits you can pick
+ */
+let fruits = [3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4];
+
+const basketBrute = (arr) => {
+  let maxlen = 0;
+  len = 0;
+  let n = arr.length;
+  for (let i = 0; i < n; i++) {
+    let basket = new Set();
+    for (let j = i; j < n; j++) {
+      basket.add(arr[j]);
+      if (basket.size <= 2) {
+        maxlen = Math.max(maxlen, j - i + 1);
+      } else break;
+    }
+  }
+  return maxlen;
+};
+
+console.log(basketBrute(fruits)); // 1, 2, 1, 1, 2 // 5
+
+// tc : r moves till n ; l moves till n ;->O(2n) ; sc ->O(3) three elements at max in map ;
+//size of map is 3 (exteremly small) constant ;
+const basketBetter = (arr) => {
+  let l = 0,
+    r = 0;
+  let maxlen = 0;
+  let n = arr.length;
+  let basket = new Map();
+
+  while (r < n) {
+    basket.set(
+      arr[r],
+      basket.get(arr[r]) === undefined ? 1 : basket.get(arr[r]) + 1
+    );
+    if (basket.size > 2) {
+      while (basket.size > 2) {
+        basket.set(arr[l], basket.get(arr[l]) - 1);
+        if (basket.get(arr[l]) === 0) basket.delete(arr[l]);
+        l++;
+      }
+    }
+    if (basket.size <= 2) {
+      maxlen = Math.max(maxlen, r - l + 1);
+    }
+    r++;
+  }
+  return maxlen;
+};
+fruits = [0, 1, 2, 2, 2, 2];
+console.log(basketBetter(fruits));
+
+//tc :  O(N)
+const basketOptimal = (arr) => {
+  let l = 0;
+  let r = 0;
+  let maxLen = 0;
+  let n = arr.length;
+  let basket = new Map();
+  while (r < n) {
+    basket.set(
+      arr[r],
+      basket.get(arr[r]) === undefined ? 1 : basket.get(arr[r]) + 1
+    );
+
+    if (basket.size > 2) {
+      basket.set(arr[l], basket.get(arr[l]) - 1);
+      if (basket.get(arr[l]) === 0) basket.delete(arr[l]);
+      l++;
+    }
+
+    if (basket.size <= 2) maxLen = Math.max(maxLen, r - l + 1);
+    r++;
+  }
+  return maxLen;
+};
+console.log(basketOptimal(fruits));
