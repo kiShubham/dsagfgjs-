@@ -298,10 +298,11 @@ const basketBrute = (arr) => {
   return maxlen;
 };
 
-console.log(basketBrute(fruits)); // 1, 2, 1, 1, 2 // 5
+// console.log(basketBrute(fruits)); // 1, 2, 1, 1, 2 // 5
 
 // tc : r moves till n ; l moves till n ;->O(2n) ; sc ->O(3) three elements at max in map ;
 //size of map is 3 (exteremly small) constant ;
+// double while loop
 const basketBetter = (arr) => {
   let l = 0,
     r = 0;
@@ -329,9 +330,9 @@ const basketBetter = (arr) => {
   return maxlen;
 };
 fruits = [0, 1, 2, 2, 2, 2];
-console.log(basketBetter(fruits));
+// console.log(basketBetter(fruits));
 
-//tc :  O(N)
+//tc :  O(N)// single while loop , similar to * 1004. Max Consecutive Ones III
 const basketOptimal = (arr) => {
   let l = 0;
   let r = 0;
@@ -355,4 +356,47 @@ const basketOptimal = (arr) => {
   }
   return maxLen;
 };
-console.log(basketOptimal(fruits));
+// console.log(basketOptimal(fruits));
+
+/* 
+*Longsest substring with at most k distinct characters ;
+input :" aaabbccd " , k = 2 , ans : 4 "aaab" ;
+*/
+//time complexity :: O(n) for the while loop , O(n) for the inner while loop and Θ(256) for hash map;
+// Θ(256) for hash map because , atmost there could be maximum 256 different character those are accessible in programming ;
+
+const longestSubstringk = (k, str) => {
+  let n = str.length;
+  let l = 0;
+  let r = 0;
+  let pokeball = new Map();
+  let maxlen = 0;
+  while (r < n) {
+    pokeball.set(
+      str[r],
+      pokeball.has(str[r]) === true ? pokeball.get(str[r]) + 1 : 1
+    );
+
+    while (pokeball.size > k) {
+      //if
+      pokeball.set(str[l], pokeball.get(str[l]) - 1);
+      pokeball.get(str[l]) === 0 ? pokeball.delete(str[l]) : null;
+      l++;
+    }
+    // if given that string should have exact k character ;
+    // pokeball.size === k ? (maxlen = Math.max(maxlen, r - l + 1)) : (maxlen = -1);
+    //atmost k character
+    pokeball.size <= k ? (maxlen = Math.max(maxlen, r - l + 1)) : (maxlen = -1);
+
+    r++;
+  }
+  return maxlen;
+};
+// let pokemons = "aaabbccd";
+let pokemons = "aabacbebebe";
+// console.log(longestSubstringk(5, pokemons));
+
+/* 
+
+
+*/
