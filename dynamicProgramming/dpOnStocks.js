@@ -75,3 +75,5 @@ function bstockII(prices) {
   return profit;
 }
 console.log(bstockII(prices));
+
+// do with recursion
